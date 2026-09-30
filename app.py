@@ -131,33 +131,20 @@ if page == "1. Overview":
     fig.update_traces(textposition="top center")
     st.plotly_chart(fig, use_container_width=True)
 
-    left, right = st.columns(2)
-    with left:
-        st.subheader("비용·자산 계상")
-        melted = annual.melt(
-            id_vars="기간",
-            value_vars=["비용계상", "자산계상"],
-            var_name="구분", value_name="억원"
-        )
-        fig2 = px.bar(melted, x="기간", y="억원", color="구분", barmode="stack")
-        st.plotly_chart(fig2, use_container_width=True)
-
-    with right:
-        st.subheader("매출액 대비 R&D 비율")
-        fig3 = px.line(
-            annual, x="기간", y="매출액대비비율",
-            markers=True, text="매출액대비비율"
-        )
-        fig3.update_traces(texttemplate="%{text:.2f}%", textposition="top center")
-        fig3.update_yaxes(title="%")
-        st.plotly_chart(fig3, use_container_width=True)
+    st.subheader("비용·자산 계상")
+    melted = annual.melt(
+        id_vars="기간",
+        value_vars=["비용계상", "자산계상"],
+        var_name="구분", value_name="억원"
+    )
+    fig2 = px.bar(melted, x="기간", y="억원", color="구분", barmode="stack")
+    st.plotly_chart(fig2, use_container_width=True)
 
     st.subheader("최신 반기 비교")
-    h1, h2, h3 = st.columns(3)
+    h1, h2 = st.columns(2)
     yoy = (160.08 / 152.85 - 1) * 100
     h1.metric("2025 H1", "152.85억원")
     h2.metric("2026 H1", "160.08억원", f"+{yoy:.1f}%")
-    h3.metric("2026 H1 매출 대비", "0.58%")
 
     st.info(
         "핵심 관찰: 2023~2025년 연구개발비는 18.4% 증가했지만 "
